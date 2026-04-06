@@ -1,9 +1,9 @@
 package com.mullitos.api.controller;
 
-import com.mullitos.api.dto.request.ProductoRequest;
-import com.mullitos.api.dto.response.ProductoResponse;
-import com.mullitos.api.entity.Producto;
-import com.mullitos.api.service.IProductoService;
+import com.mullitos.api.dto.request.ClienteRequest;
+import com.mullitos.api.dto.response.ClienteResponse;
+import com.mullitos.api.entity.Cliente;
+import com.mullitos.api.service.IClienteService;
 import com.mullitos.api.util.ModelMapperUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,40 +18,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final IProductoService service;
+    private final IClienteService service; // Cambiado a IClienteService
 
     @GetMapping
-    public ResponseEntity<List<ProductoResponse>> findall(){
-        List<Producto> people = service.findAll();
-        List<ProductoResponse> peopleResponse = people.stream().
-                map(p -> ModelMapperUtil.convertTo(p,ProductoResponse.class))
+    public ResponseEntity<List<ClienteResponse>> findall(){
+        List<Cliente> clients = service.findAll();
+        List<ClienteResponse> response = clients.stream()
+                .map(c -> ModelMapperUtil.convertTo(c, ClienteResponse.class))
                 .toList();
-        return ResponseEntity.ok(peopleResponse);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> findById(@PathVariable Integer id){
-       //Producto producto = service.findById(id);
-        return ResponseEntity.ok( ModelMapperUtil.convertTo(service.findById(id), ProductoResponse.class) );
+    public ResponseEntity<ClienteResponse> findById(@PathVariable Integer id){
+        return ResponseEntity.ok(ModelMapperUtil.convertTo(service.findById(id), ClienteResponse.class));
     }
 
     @PostMapping
-    public ResponseEntity<ProductoResponse> save(@Valid @RequestBody ProductoRequest productoRequest){
-
-        Producto productoToSave = ModelMapperUtil.convertTo( productoRequest, Producto.class);
-        Producto p = service.save(productoToSave);
-
-        return new ResponseEntity<>(ModelMapperUtil.convertTo(p, ProductoResponse.class), HttpStatus.CREATED);
+    public ResponseEntity<ClienteResponse> save(@Valid @RequestBody ClienteRequest clienteRequest){
+        Cliente clienteToSave = ModelMapperUtil.convertTo(clienteRequest, Cliente.class);
+        Cliente c = service.save(clienteToSave);
+        return new ResponseEntity<>(ModelMapperUtil.convertTo(c, ClienteResponse.class), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoResponse> update(@PathVariable Integer id, @RequestBody ProductoRequest productoRequest){
-
-        Producto productoToUpdate = ModelMapperUtil.convertTo( productoRequest, Producto.class);
-        productoToUpdate.setId(id);
-        Producto producto = service.save(productoToUpdate);
-
-        return ResponseEntity.ok(ModelMapperUtil.convertTo( producto ,ProductoResponse.class));
+    public ResponseEntity<ClienteResponse> update(@PathVariable Integer id, @Valid @RequestBody ClienteRequest clienteRequest){
+        Cliente clienteToUpdate = ModelMapperUtil.convertTo(clienteRequest, Cliente.class);
+        clienteToUpdate.setId(id);
+        Cliente updated = service.save(clienteToUpdate);
+        return ResponseEntity.ok(ModelMapperUtil.convertTo(updated, ClienteResponse.class));
     }
 
     @DeleteMapping("/{id}")
@@ -59,6 +54,4 @@ public class ClienteController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

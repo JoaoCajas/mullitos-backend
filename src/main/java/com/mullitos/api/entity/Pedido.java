@@ -2,22 +2,22 @@ package com.mullitos.api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
-@Getter @Setter
-@Builder // ESTA ES LA QUE FALTA: Genera el método .builder()
-@NoArgsConstructor // Necesario para JPA
-@AllArgsConstructor // Necesario para Builder
-
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pedido {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private java.time.LocalDateTime fechaHora = java.time.LocalDateTime.now();
-    private String estadoPedido;
-    private Double total;
+    private LocalDateTime fecha;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
@@ -27,6 +27,14 @@ public class Pedido {
     @JoinColumn(name = "empleado_id")
     private Empleado empleado;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
-    private java.util.List<DetallePedido> detalles;
+    // LA ANOTACIÓN VA AQUÍ, JUSTO SOBRE LA LISTA
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<DetallePedido> detalles;
+
+    private Double total;
+
+    @PrePersist
+    protected void onCreate() {
+        fecha = LocalDateTime.now();
+    }
 }

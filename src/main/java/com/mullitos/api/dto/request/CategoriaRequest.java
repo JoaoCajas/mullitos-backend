@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class CategoriaRequest {
-//    @NotBlank(message = "El nombre no puede estar vacío")
-//    private String nombre;
-//
-//    @Positive(message = "El precio debe ser mayor a 0")
-//    private Double precioBase;
-//
-//    @Min(1)
-//    private Integer tiempoPrepEstimado;
-//
-//    @NotNull(message = "Debe asignar una categoría")
-//    private Categoria categoria;
+    @NotBlank(message = "El nombre no puede estar vacío")
+    private String nombre;
+
+    @Positive(message = "El precio debe ser mayor a 0")
+    private Double precioBase;
+
+    @Min(1)
+    private Integer tiempoPrepEstimado;
+
+    @NotNull(message = "Debe asignar una categoría")
+    private Categoria categoria;
 }

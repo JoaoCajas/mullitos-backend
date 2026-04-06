@@ -22,5 +22,5 @@ public class ProductoRequest {
     private Integer tiempoPrepEstimado;
 
     @NotNull(message = "Debe asignar una categoría")
-    private Categoria categoria;
+    private Integer categoriaId;
 }

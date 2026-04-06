@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList; // Importante para inicializar listas si es necesario
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class MullitosBackendApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		// 1. Limpiando datos (En orden inverso a las llaves foráneas)
+		// 1. Limpiando datos (En orden inverso)
 		detallePedidoRepository.deleteAll();
 		pedidoRepository.deleteAll();
 		productoRepository.deleteAll();
@@ -35,7 +36,7 @@ public class MullitosBackendApplication implements CommandLineRunner {
 		clienteRepository.deleteAll();
 		empleadoRepository.deleteAll();
 
-        // 2. Agregando Categorías
+		// 2. Agregando Categorías
 		Categoria catBebidas = categoriaRepository.save(
 				Categoria.builder().nombre("Bebidas").prioridad(1).build()
 		);
@@ -61,35 +62,39 @@ public class MullitosBackendApplication implements CommandLineRunner {
 						.build()
 		);
 
-		// 4. Agregando Actores (Cliente y Empleado)
+		// 4. Agregando Actores
 		Cliente clienteKevin = clienteRepository.save(
 				Cliente.builder()
-						.nombre("Kevin Leon")
-						.horaLlegada(LocalDateTime.now())
-						.estadoActual("Esperando Mesa")
+						.nombre("Kevin")
+						.apellido("Leon")
+						.dni("12345678")
+						.telefono("789456123")
+						.email("kevinleo@gmail.com")
 						.build()
 		);
 
 		Empleado meseroRudy = empleadoRepository.save(
 				Empleado.builder()
 						.nombre("Rudy")
+						.apellido("Rudiar")
 						.rol("Mesero")
+						.sueldo(450.00)
 						.turno("Tarde")
 						.build()
 		);
 
-        // 5. Creando un Pedido (Cabecera)
-		Pedido pedido1 = pedidoRepository.save(
+		// 5. Creando un Pedido
+				Pedido pedido1 = pedidoRepository.save(
 				Pedido.builder()
-						.fechaHora(LocalDateTime.now())
-						.estadoPedido("EN PREPARACION")
+						.fecha(LocalDateTime.now()) // Cambiado de fechaHora a fecha
 						.cliente(clienteKevin)
 						.empleado(meseroRudy)
-						.total(23.50) // Suma de café + postre
+						.total(23.50)
+						.detalles(new ArrayList<>()) // Inicializamos la lista para evitar NullPointerException
 						.build()
 		);
 
-        // 6. Agregando los Detalles del Pedido
+		// 6. Agregando los Detalles
 		detallePedidoRepository.save(
 				DetallePedido.builder()
 						.pedido(pedido1)
@@ -107,5 +112,7 @@ public class MullitosBackendApplication implements CommandLineRunner {
 						.precioVentaMomento(15.00)
 						.build()
 		);
+
+		System.out.println("Datos cargados correctamente.");
 	}
 }

@@ -1,64 +1,58 @@
 package com.mullitos.api.controller;
 
-import com.mullitos.api.dto.request.ProductoRequest;
-import com.mullitos.api.dto.response.ProductoResponse;
-import com.mullitos.api.entity.Producto;
-import com.mullitos.api.service.IProductoService;
+import com.mullitos.api.dto.request.EmpleadoRequest;
+import com.mullitos.api.dto.response.EmpleadoResponse;
+import com.mullitos.api.entity.Empleado;
+import com.mullitos.api.service.IEmpleadoService;
 import com.mullitos.api.util.ModelMapperUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/empleados")
-@RequiredArgsConstructor // <--- Esto hace toda la magia
+@RequiredArgsConstructor
 public class EmpleadoController {
 
-    private final IProductoService service;
+    private final IEmpleadoService service;
 
     @GetMapping
-    public ResponseEntity<List<ProductoResponse>> findall(){
-        List<Producto> people = service.findAll();
-        List<ProductoResponse> peopleResponse = people.stream().
-                map(p -> ModelMapperUtil.convertTo(p,ProductoResponse.class))
+    public ResponseEntity<List<EmpleadoResponse>> findAll() {
+        List<Empleado> people = service.findAll();
+        List<EmpleadoResponse> peopleResponse = people.stream()
+                .map(p -> ModelMapperUtil.convertTo(p, EmpleadoResponse.class))
                 .toList();
         return ResponseEntity.ok(peopleResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponse> findById(@PathVariable Integer id){
-       //Producto producto = service.findById(id);
-        return ResponseEntity.ok( ModelMapperUtil.convertTo(service.findById(id), ProductoResponse.class) );
+    public ResponseEntity<EmpleadoResponse> findById(@PathVariable Integer id) {
+        // Cambiado ProductoResponse por EmpleadoResponse
+        return ResponseEntity.ok(ModelMapperUtil.convertTo(service.findById(id), EmpleadoResponse.class));
     }
 
     @PostMapping
-    public ResponseEntity<ProductoResponse> save(@Valid @RequestBody ProductoRequest productoRequest){
-
-        Producto productoToSave = ModelMapperUtil.convertTo( productoRequest, Producto.class);
-        Producto p = service.save(productoToSave);
-
-        return new ResponseEntity<>(ModelMapperUtil.convertTo(p, ProductoResponse.class), HttpStatus.CREATED);
+    public ResponseEntity<EmpleadoResponse> save(@Valid @RequestBody EmpleadoRequest request) {
+        // Convertimos el Request a la Entidad Empleado
+        Empleado entity = ModelMapperUtil.convertTo(request, Empleado.class);
+        Empleado saved = service.save(entity);
+        return new ResponseEntity<>(ModelMapperUtil.convertTo(saved, EmpleadoResponse.class), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoResponse> update(@PathVariable Integer id, @RequestBody ProductoRequest productoRequest){
-
-        Producto productoToUpdate = ModelMapperUtil.convertTo( productoRequest, Producto.class);
-        productoToUpdate.setId(id);
-        Producto producto = service.save(productoToUpdate);
-
-        return ResponseEntity.ok(ModelMapperUtil.convertTo( producto ,ProductoResponse.class));
+    public ResponseEntity<EmpleadoResponse> update(@PathVariable Integer id, @Valid @RequestBody EmpleadoRequest request) {
+        Empleado entityToUpdate = ModelMapperUtil.convertTo(request, Empleado.class);
+        entityToUpdate.setId(id);
+        Empleado updated = service.save(entityToUpdate);
+        return ResponseEntity.ok(ModelMapperUtil.convertTo(updated, EmpleadoResponse.class));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id){
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
