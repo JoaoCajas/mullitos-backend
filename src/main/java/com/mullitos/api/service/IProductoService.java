@@ -10,4 +10,6 @@ public interface IProductoService {
     public Producto update(Producto producto);
     public Producto findById(Integer id);
     public void delete(Integer id);
+
+    List<Producto> saveAll(List<Producto> productosToSave);
 }

@@ -60,4 +60,22 @@ public class ProductoController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/batch")
+    public ResponseEntity<List<ProductoResponse>> saveAll(@Valid @RequestBody List<ProductoRequest> productosRequest) {
+
+        // 1. Convertimos la lista de DTOs (Request) a Entities usando tu utilitario
+        List<Producto> productosToSave = productosRequest.stream()
+                .map(req -> ModelMapperUtil.convertTo(req, Producto.class))
+                .toList();
+
+        // 2. Guardamos toda la lista en el servicio
+        List<Producto> savedProductos = service.saveAll(productosToSave);
+
+        // 3. Convertimos las entidades guardadas de vuelta a Response
+        List<ProductoResponse> response = savedProductos.stream()
+                .map(p -> ModelMapperUtil.convertTo(p, ProductoResponse.class))
+                .toList();
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 }

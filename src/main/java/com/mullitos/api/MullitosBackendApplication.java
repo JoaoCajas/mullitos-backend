@@ -113,6 +113,6 @@ public class MullitosBackendApplication implements CommandLineRunner {
 						.build()
 		);
 
-		System.out.println("Datos cargados correctamente.");
+		System.out.println("Datos cargados correctamente");
 	}
 }
