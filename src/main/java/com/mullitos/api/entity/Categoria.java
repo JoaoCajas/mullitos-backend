@@ -9,7 +9,7 @@ import java.util.Set;
 @Table(name = "Categoria")
 @Getter
 @Setter
-@Builder // ESTA ES LA QUE FALTA: Genera el método .builder()
+@Builder // Genera el método .builder()
 @NoArgsConstructor // Necesario para JPA
 @AllArgsConstructor // Necesario para Builder
 
