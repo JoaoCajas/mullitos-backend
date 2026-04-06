@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop #create-drop #create, update, none
+      ddl-auto: update #create-drop #create, update, none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
