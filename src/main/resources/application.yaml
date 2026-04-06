@@ -7,7 +7,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update #create-drop #create, update, none
+      ddl-auto: create-drop #create, update, none
+      defer-datasource-initialization: true # Obliga a Spring a esperar que se cree la tabla antes de meter los datos
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect

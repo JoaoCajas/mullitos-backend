@@ -4,20 +4,19 @@ import com.mullitos.api.dto.request.ProductoRequest;
 import com.mullitos.api.dto.response.ProductoResponse;
 import com.mullitos.api.entity.Producto;
 import com.mullitos.api.service.IProductoService;
-import com.mullitos.api.service.impl.ProductoServiceImpl;
 import com.mullitos.api.util.ModelMapperUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping("/api/v1/pedidos")
 @RequiredArgsConstructor // <--- Esto hace toda la magia
-public class ProductoController {
+public class PedidoController {
 
     private final IProductoService service;
 

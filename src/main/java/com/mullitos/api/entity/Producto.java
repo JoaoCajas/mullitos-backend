@@ -1,12 +1,13 @@
 package com.mullitos.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "productos")
 @Getter @Setter
-@Builder // ESTA ES LA QUE FALTA: Genera el método .builder()
+@Builder // Genera el método .builder()
 @NoArgsConstructor // Necesario para JPA
 @AllArgsConstructor // Necesario para Builder
 
@@ -25,5 +26,6 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
+    @JsonIgnore
     private Categoria categoria;
 }
