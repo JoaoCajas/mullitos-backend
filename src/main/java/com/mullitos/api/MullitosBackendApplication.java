@@ -86,7 +86,7 @@ public class MullitosBackendApplication implements CommandLineRunner {
 		// 5. Creando un Pedido
 				Pedido pedido1 = pedidoRepository.save(
 				Pedido.builder()
-						.fecha(LocalDateTime.now()) // Cambiado de fechaHora a fecha
+						.fecha(LocalDateTime.now()) // Cambiado de fechaHora
 						.cliente(clienteKevin)
 						.empleado(meseroRudy)
 						.total(23.50)
